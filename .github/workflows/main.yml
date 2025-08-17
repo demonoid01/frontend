@@ -22,4 +22,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/nomadautomobile.frontend/demonoid_frontend
-            ./deploy.sh
+                ./deploy.sh
+
