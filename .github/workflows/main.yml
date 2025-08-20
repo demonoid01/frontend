@@ -1,4 +1,4 @@
-name: 🚀 Deploy Backend on Push
+name: 🚀 Deploy Next.js Frontend on Push
 
 on:
   push:
@@ -15,11 +15,25 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 📡 Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /var/www/nomadautomobile.frontend/demonoid_frontend
-            ./deploy.sh
+            cd /var/www/frontend
+
+            echo "🔄 Pulling latest changes..."
+            git reset --hard
+            git pull origin main
+
+            echo "📦 Installing dependencies..."
+            npm install --force
+
+            echo "🏗️ Building Next.js..."
+            npm run build
+
+            echo "🚀 Restarting app with PM2..."
+            pm2 stop frontend || true
+            pm2 start npm --name "frontend" -- run start
+            pm2 save
