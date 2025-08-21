@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html body {
+  background-color: #111;
+  color: whitesmoke;
+  font-family: GeistSans, "GeistSans Fallback", sans-serif;
+}
+
+.loader {
+  width: 45px;
+  height: 40px;
+  background: linear-gradient(#0000 calc(1 * 100% / 6),
+      #fff 0 calc(3 * 100% / 6),
+      #0000 0),
+    linear-gradient(#0000 calc(2 * 100% / 6), #fff 0 calc(4 * 100% / 6), #0000),
+    linear-gradient(#0000 calc(3 * 100% / 6),
+      #fff 0 calc(5 * 100% / 6),
+      #0000 0);
+  background-size: 10px 400%;
+  background-repeat: no-repeat;
+  animation: matrix 1s infinite linear;
+}
+
+@keyframes matrix {
+  0% {
+    background-position: 0% 100%, 50% 100%, 100% 100%;
+  }
+
+  100% {
+    background-position: 0% 0%, 50% 0%, 100% 0%;
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+.react-confirm-alert-overlay {
+  background-color: #00000008 !important;
+  align-items: end !important;
+  gap: 10px !important;
+}
+
+.react-confirm-alert-body {
+  background-color: #111 !important;
+  color: #fff !important;
+  max-width: 360px !important;
+  margin: 10px 50px 10px !important;
+}
+
+.react-confirm-alert-button-group {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+.react-confirm-alert-button-group button {
+  background-color: #000 !important;
+  font-size: 16px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(10%);
+  }
+
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical 30s linear infinite;
+}
+
+/* styles/globals.css */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
