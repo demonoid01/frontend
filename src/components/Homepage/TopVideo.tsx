@@ -3,7 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Loader from "../MicroComponents/Loader";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ heroVideo1 }) => {
+  // const [{ original }] = heroVideo1;
+  // console.log("heroVideo1=====", original);
+
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -42,24 +45,24 @@ const VideoPlayer = () => {
 
   return (
     <>
-      {/* {isLoading && <Loader />} */}
+      {isLoading && <Loader />}
       <video
         ref={videoRef}
-        // src="https://res.cloudinary.com/diyxdjcma/video/upload/v1747546463/WhatsApp_Video_2024-10-12_at_14.37.12_rfddtx.mp4"
-        src="/demonoid video.mp4"
+        src={heroVideo1?.original || "/CrPic1.png"}
+        // src="/demonoid video.mp4"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
-        // className={`w-full h-full object-cover ${isLoading ? "hidden" : ""}`}
-        className="w-full h-full object-cover "
+        className={`w-full h-full object-cover ${isLoading ? "hidden" : ""}`}
+      // className="w-full h-full object-cover "
       />
     </>
   );
 };
 
-const TopVideo = () => {
+const TopVideo = ({ heroVideo }) => {
 
   // const handleScroll = () => {
   //   scrollTo.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,7 +78,7 @@ const TopVideo = () => {
         </button>
       </div>
 
-      <VideoPlayer />
+      <VideoPlayer heroVideo1={heroVideo} />
     </div>
   );
 };

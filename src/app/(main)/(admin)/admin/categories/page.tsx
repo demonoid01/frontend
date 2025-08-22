@@ -20,7 +20,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import api from "@/lib/api";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -330,7 +330,7 @@ export default function CategoryListPage() {
                                     } catch (error) {
                                       toast.error(
                                         error?.response?.data?.error ||
-                                          "Failed to upload image"
+                                        "Failed to upload image"
                                       );
                                     } finally {
                                       setImageLoading(false);
