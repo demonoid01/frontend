@@ -3,15 +3,16 @@ import { useState, useEffect } from 'react';
 interface UseTextCountdownOptions {
   duration?: number; // Animation duration in milliseconds
   delay?: number; // Delay before starting animation
+  trigger?: boolean; // External trigger to start animation
 }
 
 export const useTextCountdown = (targetValue: string, options: UseTextCountdownOptions = {}) => {
-  const { duration = 800, delay = 100 } = options;
+  const { duration = 800, delay = 100, trigger = true } = options;
   const [displayValue, setDisplayValue] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (!targetValue) {
+    if (!targetValue || !trigger) {
       setDisplayValue('');
       return;
     }
@@ -82,7 +83,7 @@ export const useTextCountdown = (targetValue: string, options: UseTextCountdownO
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [targetValue, duration, delay]);
+  }, [targetValue, duration, delay, trigger]);
 
   return { displayValue, isAnimating };
 };

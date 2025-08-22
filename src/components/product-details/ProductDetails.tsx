@@ -12,29 +12,53 @@ import AOS from 'aos'
 export default function ProductDetails() {
   const [showSpecifications, setShowSpecifications] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [specificationsVisible, setSpecificationsVisible] = useState(false)
 
   const toggleSpecifications = () => {
     setShowSpecifications(!showSpecifications);
   };
 
-  // Countdown hooks for animated numbers
-  const ramRomCountdown = useCountdown(4, { duration: 600, delay: 200 });
-  const androidCountdown = useCountdown(10, { duration: 700, delay: 400 });
-  const screenCountdown = useCountdown(11.5, { duration: 800, delay: 600 });
+  // Intersection Observer for specifications section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSpecificationsVisible(true);
+        }
+      },
+      { threshold: 0.3 } // Trigger when 30% of the section is visible
+    );
 
-  // Text countdown hooks for specification values
-  const modelCountdown = useTextCountdown("NICER 2K S15", { duration: 800, delay: 100 });
-  const ramRomTextCountdown = useTextCountdown("4 + 64G / 6 + 128G / Other", { duration: 800, delay: 200 });
-  const coreCountdown = useTextCountdown("8 Core / 10 Core", { duration: 800, delay: 300 });
-  const amplifieCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 400 });
-  const radioCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 500 });
-  const screenSizeCountdown = useTextCountdown("11.5 inch", { duration: 800, delay: 600 });
-  const resolutionCountdown = useTextCountdown("2000 x 1200 dpi", { duration: 800, delay: 700 });
-  const screenCraftCountdown = useTextCountdown("QLED + In-Cell", { duration: 800, delay: 800 });
-  const androidVersionCountdown = useTextCountdown("10.0 ~ 15.0", { duration: 800, delay: 900 });
-  const carplayCountdown = useTextCountdown("Wireless", { duration: 800, delay: 1000 });
-  const videoFormatsCountdown = useTextCountdown("MP4 / 3GP / AVI / DVIX / FLV / MKV / MPG / 4K", { duration: 800, delay: 1100 });
-  const inputPowerCountdown = useTextCountdown("DC12V", { duration: 800, delay: 1200 });
+    const specificationsSection = document.getElementById('specifications-section');
+    if (specificationsSection) {
+      observer.observe(specificationsSection);
+    }
+
+    return () => {
+      if (specificationsSection) {
+        observer.unobserve(specificationsSection);
+      }
+    };
+  }, []);
+
+  // Countdown hooks for animated numbers - triggered when specifications become visible
+  const ramRomCountdown = useCountdown(4, { duration: 600, delay: 200, trigger: specificationsVisible });
+  const androidCountdown = useCountdown(10, { duration: 700, delay: 400, trigger: specificationsVisible });
+  const screenCountdown = useCountdown(11.5, { duration: 800, delay: 600, trigger: specificationsVisible });
+
+  // Text countdown hooks for specification values - triggered when specifications become visible
+  const modelCountdown = useTextCountdown("NICER 2K S15", { duration: 800, delay: 100, trigger: specificationsVisible });
+  const ramRomTextCountdown = useTextCountdown("4 + 64G / 6 + 128G / Other", { duration: 800, delay: 200, trigger: specificationsVisible });
+  const coreCountdown = useTextCountdown("8 Core / 10 Core", { duration: 800, delay: 300, trigger: specificationsVisible });
+  const amplifieCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 400, trigger: specificationsVisible });
+  const radioCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 500, trigger: specificationsVisible });
+  const screenSizeCountdown = useTextCountdown("11.5 inch", { duration: 800, delay: 600, trigger: specificationsVisible });
+  const resolutionCountdown = useTextCountdown("2000 x 1200 dpi", { duration: 800, delay: 700, trigger: specificationsVisible });
+  const screenCraftCountdown = useTextCountdown("QLED + In-Cell", { duration: 800, delay: 800, trigger: specificationsVisible });
+  const androidVersionCountdown = useTextCountdown("10.0 ~ 15.0", { duration: 800, delay: 900, trigger: specificationsVisible });
+  const carplayCountdown = useTextCountdown("Wireless", { duration: 800, delay: 1000, trigger: specificationsVisible });
+  const videoFormatsCountdown = useTextCountdown("MP4 / 3GP / AVI / DVIX / FLV / MKV / MPG / 4K", { duration: 800, delay: 1100, trigger: specificationsVisible });
+  const inputPowerCountdown = useTextCountdown("DC12V", { duration: 800, delay: 1200, trigger: specificationsVisible });
 
   // Initialize AOS
   useEffect(() => {
@@ -119,8 +143,8 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* Specifications - Exact Same Style as Image */}
-      <div className="bg-black p-6 lg:p-8 space-y-8">
+             {/* Specifications - Exact Same Style as Image */}
+       <div id="specifications-section" className="bg-black p-6 lg:p-8 space-y-8">
         {/* RAM & ROM */}
         <div className="text-center space-y-2">
           <div className="text-sm lg:text-base text-white font-medium tracking-wider">RAM & ROM</div>
