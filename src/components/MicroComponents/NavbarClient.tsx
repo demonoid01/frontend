@@ -90,7 +90,7 @@ const NavbarClient = () => {
               </svg>
             </Link>
           </div>
-          <div className="relative">
+          {/* <div className="relative">
             <Link href={"/wishlist"}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@ const NavbarClient = () => {
             <span className="absolute -top-2 bg-white text-black px-1 rounded-full -right-2 font-bold border text-xs">
               {wishlistCount}
             </span>
-          </div>
+          </div> */}
           <div className="relative">
             <Link href={"/cart"}>
               <svg

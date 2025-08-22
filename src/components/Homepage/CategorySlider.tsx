@@ -12,7 +12,7 @@ const CategorySlider = ({ categories }) => {
 
 
   return (
-    <div className="bg-gradient-to-b from-black to-red-900" >
+    <div className="bg-[linear-gradient(to_top,#700200_0%,#330000_74%,#000000_100%)]" >
 
       <div className="relative pb-10">
         <div className="flex justify-between px-4 py-6 items-center">

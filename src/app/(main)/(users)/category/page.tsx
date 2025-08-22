@@ -32,7 +32,7 @@ type Category = {
 
 async function getCategories() {
   const categories = await apiClient<Category[]>('http://localhost:3542/categories/');
-  console.log("categories==", categories);
+  // console.log("categories==", categories);
   return { categories };
 }
 
@@ -48,10 +48,8 @@ export default async function categoryPage() {
 
   return (
     <div className="pt-20">
-      {/* <h1 className="text-2xl text-center px-4 font-semibold">
-        Our Categories
-      </h1> */}
-      <div className="relative w-full h-[60vh]">
+
+      <div className="relative w-full h-[40vh] sm:h-[60vh]">
         <Image
           src="/Rectangle 70.png"
           alt="Banner"
@@ -66,13 +64,13 @@ export default async function categoryPage() {
 
       <div className="pt-16 pb-10">
         <h2 className="uppercase text-xl text-center px-4 font-semibold  pb-12">our feature products</h2>
-
-        <div className="w-[80%] h-[370px] mx-auto ">
-          <div className="grid sm:grid-cols-4 gap-5  p-2">
-            {homeProductsData.car_stereo.slice(0, 4).map((items) => {
+        <div className="sm:w-[80%] w-[95%] sm:h-[370px] h-[30vh] mx-auto">
+          {/* {mobile view} */}
+          <div className="sm:hidden grid grid-cols-2 gap-5 p-2">
+            {homeProductsData.car_stereo.slice(0, 2).map((items) => {
               return (
                 <div key={items.id} className="rounded-xl">
-                  <div className="w-[297] h-[300px] relative ">
+                  <div className="sm:w-[297] h-[300px] relative ">
                     <Image
                       src={items.imageUrl}
                       fill={true}
@@ -98,6 +96,41 @@ export default async function categoryPage() {
               );
             })}
           </div>
+          {/* desktop view */}
+          <div className="hidden sm:block">
+            <div className="grid sm:grid-cols-4 gap-5 p-2">
+              {homeProductsData.car_stereo.slice(0, 4).map((items) => {
+                return (
+                  <div key={items.id} className="rounded-xl">
+                    <div className="sm:w-[297] h-[300px] relative ">
+                      <Image
+                        src={items.imageUrl}
+                        fill={true}
+                        alt={items.title}
+                        className="mix-blend bg-[#1f1f1f] object-contain"
+                      />
+                    </div>
+                    <p className="px-1 w-full text-start font-light sm:text-lg">
+                      {items.title}
+                    </p>
+                    <div className="flex gap-2">
+                      <p className="px-1  text-start font-light sm:text-sm">
+                        ₹ 5,600
+                      </p>
+                      <Image
+                        src="/Group 20.png"
+                        alt={items.title}
+                        width={93}
+                        height={18}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+
         </div>
         <div className="flex justify-center pt-12">
           <Button className="border border-white bg-transparent text-white pt-1 pb-1 px-10 ">

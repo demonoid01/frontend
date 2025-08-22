@@ -1,6 +1,0 @@
--- AlterTable
-ALTER TABLE `Installation` ADD COLUMN `alternateNumber` VARCHAR(191) NULL,
-    ADD COLUMN `carBrand` VARCHAR(191) NOT NULL DEFAULT 'Unknown',
-    ADD COLUMN `carModel` VARCHAR(191) NOT NULL DEFAULT 'Unknown',
-    ADD COLUMN `referredDate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    ADD COLUMN `specialInstructions` VARCHAR(191) NULL;

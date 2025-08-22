@@ -20,16 +20,18 @@ export function ViewCategory({ categories }) {
             opts={{
                 align: "start",
             }}
-            className="flex w-full max-w-[27rem] md:max-w-full overflow-hidden"
+            className="flex w-full md:max-w-full overflow-hidden"
         >
 
-            <div className="w-full sm:w-1/3  relative pl-40 pr-5 ">
+            <div className="w-full sm:w-1/3  relative pl-20 sm:pl-40 pr-5 pb-16">
 
                 <h3 className="uppercase text-black font-bold text-lg mb-5">Categories</h3>
-                <p className="text-black  text-base  leading-none text-justify  ">Upgrade your ride with our premium range of car accessories  from dash cameras and speakers to doors,
+                <p className="text-black  text-base  leading-none sm:text-justify  ">
+                    Upgrade your ride with our premium range of car accessories
+                    from dash cameras and speakers to doors,
                     stereos, cables, and lights. Every product is built for performance, style, and reliability, giving your
                     car the care it deserves.</p>
-                <div className="absolute bottom-5 right-[55%]">
+                <div className="absolute mt-5 sm:bottom-5 bottom-6 sm:right-[55%] right-[45%]">
 
                     <CarouselNext className="bg-black" />
                     <CarouselPrevious className="bg-black" />
@@ -38,7 +40,7 @@ export function ViewCategory({ categories }) {
             </div>
 
             <div className="w-full sm:w-2/3 ml-2">
-                <CarouselContent className=" " >
+                <CarouselContent className=" ">
 
                     {categories?.map((item) => (
                         <CarouselItem

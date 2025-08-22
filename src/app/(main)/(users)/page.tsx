@@ -1,5 +1,3 @@
-// "use client"
-// import React, { useRef } from "react";
 import Image from "next/image";
 import HomeBestSellers from "@/components/Homepage/HomeBestSellers";
 import CategorySlider from "@/components/Homepage/CategorySlider";
@@ -32,41 +30,53 @@ type Category = {
   updatedAt: string;
   image: string;
 };
+type heroVideo = {
+  id: number;
+  created_at: string;
+  original: string;
+  qualities: {
+    "120p": string;
+    "1080p": string;
+    "2k": string;
+    "4k": string;
+  };
+};
 
 async function getCategories() {
-  // const categories = await prisma.category.findMany();
-  // let categories = await fetch("http://localhost:3542/categories");
-  // categories = await categories.json()
-  // console.log(categories);
-  // return { categories }
   const categories = await apiClient<Category[]>('http://localhost:3542/categories/');
-  console.log("categories==", categories);
-
   return { categories };
   // const categories = await apiClient<Category[]>('http://localhost:3542/categories', { method: 'POST', body: { id: 1 } });
   // return { categories };
+
+}
+async function getHeroVideo() {
+  const topVideo = await apiClient<heroVideo[]>('http://147.93.107.197:3542/hero');
+  return { topVideo };
 
 }
 
 
 export default async function Homepage() {
   const categoriesData = await getCategories();
+  const HeroVideo = await getHeroVideo();
+  if (!HeroVideo?.topVideo) {
+    notFound();
+  }
+  const { topVideo } = HeroVideo;
+  // console.log("HeroVideo====", topVideo);
 
   if (!categoriesData?.categories) {
     notFound();
   }
-
-  // const targetRef = useRef(null) -[#111];
-
   const { categories } = categoriesData;
 
   return (
-    <div className="min-h-dvh bg-[#111]">
+    <div className="min-h-dvh w-full sm:w-full bg-[#111]">
 
-      <TopVideo />
+      <TopVideo heroVideo={topVideo} />
       <DesktopTopVideo />
 
-      <div className="mt-[100vh] sm:mt-0 pb-4 bg-[#111]">
+      <div className="mt-[100vh] sm:mt-0 pb-4 bg-[#111] w-full sm:w-full">
         <CategorySlider categories={categories} />
         <div className="sm:hidden relative h-[430px] md:h-[430px] md:w-[700px] w-full aspect-square bg-repeat mb-5 bg-yellow-400">
           <TopVideo2 />
