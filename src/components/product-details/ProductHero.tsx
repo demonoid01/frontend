@@ -1,75 +1,71 @@
 import Image from "next/image"
-import { Star, ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Truck, FileText, Shield, Wrench } from "lucide-react"
 
 export default function ProductHero() {
   return (
     <div className="lg:sticky lg:top-8">
       {/* Main Product Image with Navigation - Full Width */}
       <div className="relative">
-        <div className="relative aspect-square  lg:rounded-t-2xl overflow-hidden">
-          <Image
+        <div className="relative lg:max-w-2xl lg:mx-auto lg:rounded-t-2xl overflow-hidden bg-gray-200">
+          {/* Try regular img tag first */}
+          <img
             src="/hero.png"
             alt="Dashboard interface devices"
-            fill
-            className="object-contain -p-2 lg:p-8"
+            className="w-full h-auto object-contain p-2 lg:p-8"
           />
 
           {/* Navigation Arrows */}
          
         </div>
 
-        {/* Product Info Immediately After Image - No Gap */}
-        <div className="bg-black p-6 lg:rounded-b-2xl -mt-4 lg:-mt-6">
+        {/* Product Info - Only show on mobile */}
+        <div className="lg:hidden bg-black p-6 lg:rounded-b-2xl -mt-4 lg:-mt-6">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2">DASHBOARD SYSTEM S15</h2>
           <div className="text-3xl lg:text-4xl font-bold text-white mb-4">₹ 10,000/-</div>
-          <p className="text-gray-300 text-sm lg:text-base leading-relaxed">
+          <p className="text-gray-300 text-sm lg:text-base leading-relaxed mb-4">
             Experience next-level driving entertainment. The dashboard system comes with a vibrant 2K touchscreen,
             Android support, Bluetooth connectivity, and advanced interface features for modern vehicles.
           </p>
 
-          {/* Star Rating */}
-          <div className="flex items-center gap-2 mt-4">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${i < 4 ? "fill-yellow-400 text-yellow-400" : "text-gray-600"}`}
-                />
-              ))}
+          {/* Product Features */}
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center gap-2">
+              <img src="/icons/badge.png" alt="Badge" className="w-6 h-6" />
+              <span className="text-white text-sm">No Cost <span className="text-green-400 font-semibold">EMI</span></span>
             </div>
-            <span className="text-gray-400 text-sm">8 Reviews</span>
+            <div className="flex items-center gap-2">
+              <img src="/icons/badge.png" alt="Badge" className="w-6 h-6" />
+              <span className="text-white text-sm">Home Installation</span>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Additional Product Images - Desktop Only */}
-      <div className="hidden lg:grid lg:grid-cols-3 lg:gap-4 lg:mt-6">
-        <div className="aspect-square bg-gray-900 rounded-lg overflow-hidden">
-          <Image
-            src="/placeholder.svg?height=200&width=200&text=Side+view"
-            alt="Side view"
-            width={200}
-            height={200}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="aspect-square bg-gray-900 rounded-lg overflow-hidden">
-          <Image
-            src="/placeholder.svg?height=200&width=200&text=Back+view"
-            alt="Back view"
-            width={200}
-            height={200}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="aspect-square bg-gray-900 rounded-lg overflow-hidden">
-          <Image
-            src="/placeholder.svg?height=200&width=200&text=Accessories"
-            alt="Accessories"
-            width={200}
-            height={200}
-            className="w-full h-full object-cover"
-          />
+          {/* Service Icons */}
+          <div className="grid grid-cols-4 gap-4">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center mb-2">
+                <img src="/icons/COD.png" alt="COD" className="w-8 h-8" />
+              </div>
+              <span className="text-white text-xs text-center">COD Unavailable</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center mb-2">
+                <img src="/icons/gst.png" alt="GST" className="w-8 h-8" />
+              </div>
+              <span className="text-white text-xs text-center">GST Available</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center mb-2">
+                <img src="/icons/warranty.png" alt="Warranty" className="w-8 h-8" />
+              </div>
+              <span className="text-white text-xs text-center">1 Year Warranty</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 border-2 border-white rounded-full flex items-center justify-center mb-2">
+                <img src="/icons/home-install.png" alt="Home Installation" className="w-8 h-8" />
+              </div>
+              <span className="text-white text-xs text-center">HOME Installation</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

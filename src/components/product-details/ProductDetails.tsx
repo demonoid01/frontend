@@ -47,18 +47,18 @@ export default function ProductDetails() {
   const screenCountdown = useCountdown(11.5, { duration: 800, delay: 600, trigger: specificationsVisible });
 
   // Text countdown hooks for specification values - triggered when specifications become visible
-  const modelCountdown = useTextCountdown("NICER 2K S15", { duration: 800, delay: 100, trigger: specificationsVisible });
-  const ramRomTextCountdown = useTextCountdown("4 + 64G / 6 + 128G / Other", { duration: 800, delay: 200, trigger: specificationsVisible });
-  const coreCountdown = useTextCountdown("8 Core / 10 Core", { duration: 800, delay: 300, trigger: specificationsVisible });
-  const amplifieCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 400, trigger: specificationsVisible });
-  const radioCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 800, delay: 500, trigger: specificationsVisible });
-  const screenSizeCountdown = useTextCountdown("11.5 inch", { duration: 800, delay: 600, trigger: specificationsVisible });
-  const resolutionCountdown = useTextCountdown("2000 x 1200 dpi", { duration: 800, delay: 700, trigger: specificationsVisible });
-  const screenCraftCountdown = useTextCountdown("QLED + In-Cell", { duration: 800, delay: 800, trigger: specificationsVisible });
-  const androidVersionCountdown = useTextCountdown("10.0 ~ 15.0", { duration: 800, delay: 900, trigger: specificationsVisible });
-  const carplayCountdown = useTextCountdown("Wireless", { duration: 800, delay: 1000, trigger: specificationsVisible });
-  const videoFormatsCountdown = useTextCountdown("MP4 / 3GP / AVI / DVIX / FLV / MKV / MPG / 4K", { duration: 800, delay: 1100, trigger: specificationsVisible });
-  const inputPowerCountdown = useTextCountdown("DC12V", { duration: 800, delay: 1200, trigger: specificationsVisible });
+  const modelCountdown = useTextCountdown("NICER 2K S15", { duration: 5000, delay: 100, trigger: specificationsVisible });
+  const ramRomTextCountdown = useTextCountdown("4 + 64G / 6 + 128G / Other", { duration: 5000, delay: 200, trigger: specificationsVisible });
+  const coreCountdown = useTextCountdown("8 Core / 10 Core", { duration: 5000, delay: 300, trigger: specificationsVisible });
+  const amplifieCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 5000, delay: 400, trigger: specificationsVisible });
+  const radioCountdown = useTextCountdown("Depending On The Board Configuration", { duration: 5000, delay: 500, trigger: specificationsVisible });
+  const screenSizeCountdown = useTextCountdown("11.5 inch", { duration: 5000, delay: 600, trigger: specificationsVisible });
+  const resolutionCountdown = useTextCountdown("2000 x 1200 dpi", { duration: 5000, delay: 700, trigger: specificationsVisible });
+  const screenCraftCountdown = useTextCountdown("QLED + In-Cell", { duration: 5000, delay: 800, trigger: specificationsVisible });
+  const androidVersionCountdown = useTextCountdown("10.0 ~ 15.0", { duration: 5000, delay: 900, trigger: specificationsVisible });
+  const carplayCountdown = useTextCountdown("Wireless", { duration: 5000, delay: 1000, trigger: specificationsVisible });
+  const videoFormatsCountdown = useTextCountdown("MP4 / 3GP / AVI / DVIX / FLV / MKV / MPG / 4K", { duration: 5000, delay: 1100, trigger: specificationsVisible });
+  const inputPowerCountdown = useTextCountdown("DC12V", { duration: 5000, delay: 1200, trigger: specificationsVisible });
 
   // Initialize AOS
   useEffect(() => {
@@ -97,6 +97,37 @@ export default function ProductDetails() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  // Touch/swipe functionality
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      nextSlide()
+    }
+    if (isRightSwipe) {
+      prevSlide()
+    }
+
+    // Reset values
+    setTouchStart(0)
+    setTouchEnd(0)
   }
   return (
     <div className="py-6 lg:py-0 space-y-8">
@@ -331,7 +362,12 @@ export default function ProductDetails() {
 
       {/* Photo Slider Section */}
       <div className="px-2 lg:px-0 mt-10">
-        <div className="relative aspect-[4/3] bg-black rounded-lg overflow-hidden">
+        <div 
+          className="relative aspect-[4/3] bg-black rounded-lg overflow-hidden"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {/* Current Slide */}
           <div className="absolute inset-0">
             <Image
