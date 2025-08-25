@@ -21,7 +21,7 @@ export default function ProductHero() {
         {/* Product Info - Only show on mobile */}
         <div className="lg:hidden bg-black p-6 lg:rounded-b-2xl -mt-4 lg:-mt-6">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2">DASHBOARD SYSTEM S15</h2>
-          <div className="text-3xl lg:text-4xl font-bold text-white mb-4">₹ 10,000/-</div>
+          <div className="text-3xl lg:text-4xl font-bold text-white mb-4">₹ 1,000/-</div>
           <p className="text-gray-300 text-sm lg:text-base leading-relaxed mb-4">
             Experience next-level driving entertainment. The dashboard system comes with a vibrant 2K touchscreen,
             Android support, Bluetooth connectivity, and advanced interface features for modern vehicles.
