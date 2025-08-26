@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: { params: { id: string } 
       </div>
 
 
-      <div className="min-h-[80vh] pt-32 container bg-slate-200 mx-auto px-4 pb-20">
+      <div className="min-h-[80vh] pt-32 container mx-auto px-4 pb-20">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {categoryData.map((product) => {
@@ -111,53 +111,50 @@ export default async function CategoryPage({ params }: { params: { id: string } 
 
             return (
               <Link href={`/product/${product.slug}`} key={product.id}>
-                <div className="product-card bg-black rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                  <div className="relative h-64 w-full overflow-hidden">
-                    {product?.card_img !== null ? (
+                <div className="product-card rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  {product?.card_img !== null ? (
+                    <div className="w-[297] h-[300px] relative">
                       <Image
-                        src={product?.images
-                          ? typeof product.images === "string"
-                            ? JSON.parse(product.images)[0]
-                            : product.images[0]
-                          : "https://icon-library.com/images/images-icon/images-icon-13.jpg"}
+                        src={"/CrPic1.png"}
                         alt={product.name}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-300"
                       />
-                    ) : (
-                      <div className="bg-white/20 w-full h-full flex justify-center items-center">
-                        <div key={product?.id} className="rounded-xl">
-                          <div className="w-[297] h-[300px] relative ">
-                            <Image
-                              src={product?.card_img ? typeof product.card_img === "string" ? product.card_img : product.card_img : "/Rectangle 70.png"}
-                              // src="/Rectangle 70.png"
-                              fill={true}
-                              alt={product.name || "Product"}
-                              alt="Product Image"
-                              className="mix-blend bg-[#1f1f1f] object-contain"
-                            />
-                          </div>
-                          <p className="px-1 w-full text-start font-light sm:text-lg">
-                            {product.name}
-                          </p>
-                          <div className="flex gap-2">
-                            <p className="px-1  text-start font-light sm:text-sm">
-                              {`₹ ${product.salePrice}`}
-                            </p>
-                            <Image
-                              src="/Group 20.png"
-                              alt="price banner"
-                              width={93}
-                              height={18}
-                            />
-                          </div>
-                        </div>
+                    </div>
+                  ) : (
+
+                    <div key={product?.id} className="rounded-xl">
+                      <div className="w-[297] h-[300px] relative mb-2">
+                        <Image
+                          src={product?.card_img ? typeof product.card_img === "string" ? product.card_img : product.card_img : "/Rectangle 70.png"}
+                          // src="/Rectangle 70.png"
+                          fill={true}
+                          alt={product.name || "Product"}
+                          // alt="Product Image "
+                          className="mix-blend bg-[#1f1f1f] object-contain hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
-                    )}
+                      <p className="px-1 w-full text-start font-light sm:text-lg">
+                        {product.name}
+                      </p>
+                      <div className="flex gap-2">
+                        <p className="px-1  text-start font-light sm:text-sm">
+                          {`₹ ${product.salePrice}`}
+                        </p>
+                        <Image
+                          src="/Group 20.png"
+                          alt="price banner"
+                          width={93}
+                          height={18}
+                        />
+                      </div>
+                    </div>
+
+                  )}
 
 
-                  </div>
                 </div>
+
               </Link>
             );
           })}
@@ -173,7 +170,7 @@ export default async function CategoryPage({ params }: { params: { id: string } 
 
       </div>
 
-    </div>
+    </div >
 
 
 

@@ -97,8 +97,6 @@ export default async function Homepage() {
         </div>
         <HomeProducts />
         <DesktopHomeProduct />
-
-
         <div className="">
           <div className="w-full bg-white  overflow-hidden py-4 ">
             <div className="flex whitespace-nowrap gap-10 animate-marquee font-bold items-center uppercase ">

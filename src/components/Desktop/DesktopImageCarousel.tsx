@@ -8,7 +8,6 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { categoryData } from "@/utils/categoryData";
 import Image from "next/image";
 
 const pic = [
@@ -32,25 +31,25 @@ export function DesktopImageCarousel() {
             onMouseEnter={plugin.current.stop}
             onMouseLeave={plugin.current.reset}
         >
-            <CarouselContent className="w-[90%] bg-red-800">
+            <CarouselContent className="">
                 {pic.map((item) => (
-                    <CarouselItem key={item.path} className="bg-red-400 basis-1/2 md:basis-1/6 py-2">
-                        {/* <div className="">
-                            <Card className="border-none bg-slate-300">
-                                <CardContent className="relative w-[565px] h-[759px]  bg-red-700" >
-                                    <Image
-                                        src={item.path}
-                                        fill
-                                        alt={item.path}
-                                    />
+                    <CarouselItem key={item.path} className="sm:basis-1/3 py-2">
 
-                                </CardContent>
-                            </Card>
-                        </div> */}
+                        <Card className="border-none relative sm:w-[100%] sm:h-[70vh]">
+                            <CardContent className="" >
+                                <Image
+                                    src={item.path}
+                                    fill
+                                    className="object-fill bg-black"
+                                    alt={item.path}
+                                />
+
+                            </CardContent>
+                        </Card>
+
                     </CarouselItem>
                 ))}
             </CarouselContent>
-
         </Carousel>
     );
 }

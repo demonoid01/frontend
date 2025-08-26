@@ -17,12 +17,32 @@ const NavbarClient = () => {
       <div className="w-full bg-white  overflow-hidden py-2 h-9">
         <div className="flex flex-col justify-center items-center bg-white">
           {/* First block */}
-          <div>
-            <h3 className="text-black">STYLE THAT ROARS</h3>
+          <div className="animate-slide-up ">
+            <div className="">
+              <p className="flex items-center justify-center text-gray-800 mb-20">
+                Style That Roars.
+              </p>
+            </div>
+            <div className="">
+              <p className="flex items-center text-gray-800">
+                Home Installation
+              </p>
+            </div>
           </div>
 
         </div>
       </div>
+
+      {/* <div className="w-full bg-white  overflow-hidden py-2 h-9 flex items-center justify-center">
+        <div className="animate-slide-up">
+          <p className="h-10 flex items-center text-lg font-bold text-gray-800">
+            FREE Home Installation
+          </p>
+          <p className="h-10 flex items-center text-lg font-bold text-gray-800">
+            Home FREE Home Installation
+          </p>
+        </div>
+      </div> */}
 
       {/* main navbar */}
       <div className=" flex justify-between items-center relative h-full  py-4 px-3 sm:px-4 sm:pt-7">
