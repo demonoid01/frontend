@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 
 import { apiClient } from "@/utils/helper";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useRouter } from "next/navigation";
+
 import { log } from "node:console";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -24,7 +24,7 @@ export default function CreateCategoryPage() {
     description?: string;
     imageUrl?: string;
   };
-  const navigate = useRouter();
+
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async (values: {
