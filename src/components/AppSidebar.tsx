@@ -78,6 +78,15 @@ const items = [
     ],
   },
   {
+    title: "Video",
+    url: "/admin/heroVideos",
+    icon: FileBox,
+    subItems: [
+      // { title: "Product List", url: "/admin/products" },
+      { title: "Add Video", url: "/admin/heroVideos/add" },
+    ],
+  },
+  {
     title: "Home Installation",
     url: "/admin/home-installation",
     icon: PenToolIcon,

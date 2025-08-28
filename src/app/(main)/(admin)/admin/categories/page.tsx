@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
+import { apiClient } from "@/utils/helper";
 
 const CategorySchema = Yup.object().shape({
   name: Yup.string().required("Category name is required"),
@@ -41,6 +42,17 @@ interface Category {
   imageUrl?: string;
 }
 
+type CategoryAll = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  status: number; // if it’s only 0 | 1 you can type as 0 | 1
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  image: string; // URL of uploaded image
+}
+
 export default function CategoryListPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,9 +62,12 @@ export default function CategoryListPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/categories");
-        const data = await response.json();
-        setCategories(data.categories);
+        // const response = await fetch("/api/categories");
+        const response = await apiClient<Category[]>('http://147.93.107.197:3542/categories');
+
+        console.log("response", response);
+        // const data = await response.json();
+        setCategories(response);
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {
@@ -65,15 +80,19 @@ export default function CategoryListPage() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`/api/categories`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
 
-      if (!response.ok) {
+      // const response = await fetch(`/api/categories`, {
+      //   method: "DELETE",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ id }),
+      // });
+      const response = await apiClient<Category[]>(`http://147.93.107.197:3542/categories/${id}`, { method: 'DELETE' });
+      console.log("response", response);
+
+
+      if (response.message !== "Category deleted") {
         throw new Error("Failed to delete category");
       }
 

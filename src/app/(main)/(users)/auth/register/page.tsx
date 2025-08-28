@@ -6,6 +6,18 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Cookies from "js-cookie";
+import { apiClient } from "@/utils/helper";
+
+
+type User = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  password: string;
+};
+
+
 
 const UserRegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -36,24 +48,27 @@ const UserRegisterPage = () => {
 
     try {
       // Get fresh CSRF token
-      const wishlistCookie = Cookies.get("wishlist");
-      const cartCookie = Cookies.get("cart");
-      const { data: csrfData } = await api.get("/auth/csrf");
+      // const wishlistCookie = Cookies.get("wishlist");
+      // const cartCookie = Cookies.get("cart");
+      // const { data: csrfData } = await api.get("/auth/csrf");
 
-      const response = await api.post("/auth/register", {
-        ...formData,
-        wishlistCookie,
-        cartCookie,
-        _csrf: csrfData.csrfToken,
-      });
+      // const response = await api.post("/auth/register", {
+      //   ...formData,
+      //   wishlistCookie,
+      //   cartCookie,
+      //   _csrf: csrfData.csrfToken,
+      // });
+      console.log("formData===", formData);
 
-      console.log("Registration successful:", response.data);
-      if (response.data.message === "User registered successfully") {
+      const response = await apiClient<User[]>('http://147.93.107.197:3542/auth/register', { method: 'POST', body: { ...formData } });
+
+      console.log("Registration successful:", response);
+      if (response.message === "User registered successfully") {
         // Clear cookies after syncing
         toast.success("Registered successfully");
-        Cookies.remove("wishlist");
-        Cookies.remove("cart");
-        navigate.push("/auth/login");
+        // Cookies.remove("wishlist");
+        // Cookies.remove("cart");
+        navigate.push("/");
       }
     } catch (err) {
       // Improved error handling

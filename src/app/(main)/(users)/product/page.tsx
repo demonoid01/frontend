@@ -1,96 +1,137 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { apiClient } from "@/utils/helper";
-import { GoDotFill } from "react-icons/go";
 
+import { apiClient } from "@/utils/helper";
+import Image from "next/image";
+import { notFound, useRouter } from "next/navigation";
+import React, { use } from "react";
+import { homeProductsData } from "@/utils/homeProductsData";
+import { Button } from "@/components/ui/button";
+import { ViewCategory } from "@/components/ViewCategory";
 
 export const dynamic = 'force-dynamic';
 
-
-type OneCategory = {
+type Category = {
     id: number;
     name: string;
-    description: string;
-    basePrice: string;
-    salePrice: string;
-    sku: string;
     slug: string;
-    c_id: number;
-    weight: {
-        kg: number;
-    };
-    dimensions: {
-        depth: number;
-        width: number;
-        height: number;
-    };
-    isstock: number;
-    main_image: string;
-    images: string[];
-    card_img: string;
+    description: string;
     status: number;
-    isFeatured: number;
     createdAt: string;
     updatedAt: string;
-    specifications: {
-        data: {
-            title: string;
-            value: string;
-        }[];
-        image: string;
-    }[];
-    features: {
-        image: string;
-        details: string;
-    }[];
-    bestSeller: number;
+    image: string;
 };
 
-async function getCategory(id: number) {
-    // const res = await fetch(`https://nomadautomobile.store/api/categories/${slug}`, {
-    //   cache: "no-store",
-    // });
-    const res = await apiClient<OneCategory[]>(`http://147.93.107.197:3542/products/category/${id}`);
-    // console.log('Category data:', res[0].status);
-
-    if (res[0].status !== 1) {
-        return null;
-    }
-
-
-
-
-    return res;
+async function getProduct() {
+    const categories = await apiClient<Category[]>('http://localhost:3542/categories/');
+    // console.log("categories==", categories);
+    return { categories };
 }
 
 
-export default async function CategoryPage({ params }: { params: { id: string } }) {
-    const { slug } = params;
-    console.log('slug===', slug);
+export default async function productPage() {
+    const categoriesData = await getProduct();
 
-    const categoryData = await getCategory(slug);
 
-    if (!categoryData) {
+    if (!categoriesData?.categories) {
         notFound();
     }
-
-    const [{ name: productName, description: productDiscription }] = categoryData;
-    // console.log('categoryData====', category);
-
-
-    const calculateDiscount = (basePrice: number, salePrice: number | null) => {
-        if (!salePrice) return null;
-        const discount = ((basePrice - salePrice) / basePrice) * 100;
-        return Math.round(discount);
-    };
+    const { categories } = categoriesData;
 
     return (
         <div className="pt-20">
-            <h1>product page</h1>
+
+            <div className="relative w-full h-[40vh] sm:h-[60vh]">
+                <Image
+                    src="/Rectangle 70.png"
+                    alt="Banner"
+                    fill
+                    className="object-fit"
+                />
+            </div>
+            {/* view categories */}
+            <div className="bg-white pt-10 pb-10">
+                <ViewCategory categories={categories} />
+            </div>
+
+            <div className="pt-16 pb-10">
+                <h2 className="uppercase text-xl text-center px-4 font-semibold  pb-12">our feature products</h2>
+                <div className="sm:w-[80%] w-[95%] sm:h-[370px] h-[30vh] mx-auto">
+                    {/* {mobile view} */}
+                    <div className="sm:hidden grid grid-cols-2 gap-5 p-2">
+                        {homeProductsData.car_stereo.slice(0, 2).map((items) => {
+                            return (
+                                <div key={items.id} className="rounded-xl">
+                                    <div className="sm:w-[297] h-[300px] relative ">
+                                        <Image
+                                            src={items.imageUrl}
+                                            fill={true}
+                                            alt={items.title}
+                                            className="mix-blend bg-[#1f1f1f] object-contain"
+                                        />
+                                    </div>
+                                    <p className="px-1 w-full text-start font-light sm:text-lg">
+                                        {items.title}
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <p className="px-1  text-start font-light sm:text-sm">
+                                            ₹ 5,600
+                                        </p>
+                                        <Image
+                                            src="/Group 20.png"
+                                            alt={items.title}
+                                            width={93}
+                                            height={18}
+                                        />
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    {/* desktop view */}
+                    <div className="hidden sm:block">
+                        <div className="grid sm:grid-cols-4 gap-5 p-2">
+                            {homeProductsData.car_stereo.slice(0, 4).map((items) => {
+                                return (
+                                    <div key={items.id} className="rounded-xl">
+                                        <div className="sm:w-[297] h-[300px] relative ">
+                                            <Image
+                                                src={items.imageUrl}
+                                                fill={true}
+                                                alt={items.title}
+                                                className="mix-blend bg-[#1f1f1f] object-contain"
+                                            />
+                                        </div>
+                                        <p className="px-1 w-full text-start font-light sm:text-lg">
+                                            {items.title}
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <p className="px-1  text-start font-light sm:text-sm">
+                                                ₹ 5,600
+                                            </p>
+                                            <Image
+                                                src="/Group 20.png"
+                                                alt={items.title}
+                                                width={93}
+                                                height={18}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                    </div>
+
+                </div>
+                <div className="flex justify-center pt-12">
+                    <Button className="border border-white bg-transparent text-white pt-1 pb-1 px-10 ">
+                        View all
+                    </Button>
+                </div>
+
+            </div>
+
+
 
         </div>
-
-
     );
 }

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { apiClient } from "@/utils/helper";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
+import { log } from "node:console";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
@@ -13,7 +14,8 @@ import * as Yup from "yup";
 const CategorySchema = Yup.object().shape({
   name: Yup.string().required("Category name is required"),
   description: Yup.string(),
-  imageUrl: Yup.string().url("Must be a valid URL").optional(),
+  // imageUrl: Yup.string().url("Must be a valid URL").optional(),
+  imageUrl: Yup.mixed().required("Image is required"),
 });
 
 export default function CreateCategoryPage() {
@@ -30,12 +32,23 @@ export default function CreateCategoryPage() {
     description?: string;
     image?: string;
   }) => {
+    // console.log("values", values);
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description || "");
+    if (values.image) {
+      formData.append("image", values.image); // must be a File object
+    }
+
+
+
     try {
       // const response = await api.post("/categories", {
       //   ...values,
       // });
-      const response = await apiClient<CategoryUplord[]>('http://localhost:3542/categories', { method: 'POST', body: { ...values } });
-      console.log("response=====", response);
+      // const response = await apiClient<CategoryUplord[]>('http://147.93.107.197:3542/categories', { method: 'POST', body: formData, });
+      const response = await apiClient('http://147.93.107.197:3542/categories', { method: 'POST', body: formData, });
+      // console.log("response=====", response);
 
 
       if (response.message !== "Category created") {
@@ -49,7 +62,7 @@ export default function CreateCategoryPage() {
           onClick: () => console.log("Undo"),
         },
       });
-      navigate.back();
+      // navigate.back();
     } catch (error) {
       toast("Error!", {
         description: error.message || "Failed to create category",
@@ -124,33 +137,48 @@ export default function CreateCategoryPage() {
                 accept="image/*"
                 className=""
                 onChange={async (event) => {
-                  const file = event.currentTarget.files?.[0];
-                  if (file) {
-                    setLoading(true);
-                    try {
-                      const formData = new FormData();
-                      formData.append("file", file);
-                      const response = await api.post("/upload", formData, {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                        },
-                      });
-                      console.log(response.data);
-                      if (response.status === 200) {
-                        setFieldValue("imageUrl", response.data.url);
-                        toast("Success!", {
-                          description: "Image uploaded successfully",
-                        });
-                      } else {
-                        throw new Error("Failed to upload image");
-                      }
-                    } catch (error) {
-                      toast.error(error?.response?.data?.error);
-                    } finally {
-                      setLoading(false);
-                    }
+                  if (event.currentTarget.files) {
+                    setFieldValue("imageUrl", event.currentTarget.files?.[0]);
                   }
-                }}
+
+                  // const file = event.currentTarget.files?.[0];
+                  // if (file) {
+                  //   setLoading(true);
+                  //   setFieldValue("imageUrl", response.data.url);
+                  //   toast("Success!", {
+                  //     description: "Image uploaded successfully",
+                  //   });
+
+                  // try {
+                  //   const formData = new FormData();
+                  //   formData.append("file", file);
+                  //   console.log("file===", formData);
+
+
+                  //   const res = await apiClient<CategoryUplord[]>(
+                  //     'http://147.93.107.197:3542/categories',
+                  //     {
+                  //       method: 'POST',
+                  //       body: formData,
+                  //     }
+                  //   )
+
+                  //   console.log("for image==", response);
+                  //   if (response.status === 200) {
+                  //     setFieldValue("imageUrl", response.data.url);
+                  //     toast("Success!", {
+                  //       description: "Image uploaded successfully",
+                  //     });
+                  //   } else {
+                  //     throw new Error("Failed to upload image");
+                  //   }
+                  // } catch (error) {
+                  //   toast.error(error?.response?.data?.error);
+                  // } finally {
+                  //   setLoading(false);
+                  // }
+                }
+                }
               />
               <Field
                 id="imageUrl"

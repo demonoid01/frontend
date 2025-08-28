@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { generateCsrfToken, setCsrfToken, validateCsrfToken } from "@/lib/csrf";
-// import { UserRole } from "@prisma/client";
+
 const UserRole = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
@@ -53,6 +53,8 @@ const ROLE_BASED_ACCESS = {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  console.log("Middleware Pathname:", pathname);
+
   const response = NextResponse.next();
   let shouldRotateCsrf = false;
 
@@ -91,6 +93,15 @@ export async function middleware(request: NextRequest) {
   // Handle OPTIONS requests
   if (request.method === "OPTIONS") {
     return response;
+  }
+
+  // admin panel 
+
+  if (pathname === "/auth/adminLogin") {
+    console.log("======");
+
+    console.log(`Redirecting admin panel: path=${pathname}`);
+    return NextResponse.redirect(new URL("/auth/adminLogin", request.url));
   }
 
   // CSRF Protection for API Routes
@@ -203,33 +214,35 @@ export async function middleware(request: NextRequest) {
     }
     console.log("UserRole==", UserRole);
 
-    if (!user) {
-      console.log(`Redirecting unauthenticated access: path=${pathname}`);
-      return NextResponse.redirect(new URL("/auth/login", request.url));
-    }
+    // if (!user) {
+    //   console.log(`Redirecting unauthenticated access: path=${pathname}`);
+    //   return NextResponse.redirect(new URL("/auth/login", request.url));
+    // }
+    console.log("*************");
+
 
     // Additional role-based checks for admin routes
-    if (pathname.startsWith("/admin")) {
-      const userRole = user.role as UserRole;
-      if (!(userRole === UserRole.ADMIN || userRole === UserRole.SUPER_ADMIN)) {
-        if (
-          userRole === UserRole.CONTENT_MGR &&
-          pathname.startsWith("/admin/content")
-        ) {
-          // Allow content managers to access content section
-        } else if (
-          userRole === UserRole.INVENTORY_MGR &&
-          pathname.startsWith("/admin/products")
-        ) {
-          // Allow inventory managers to access products section
-        } else {
-          console.log(
-            `Redirecting unauthorized admin access: userRole=${userRole}, path=${pathname}`
-          );
-          return NextResponse.redirect(new URL("/auth/login", request.url));
-        }
-      }
-    }
+    // if (pathname.startsWith("/admin")) {
+    //   const userRole = user.role as UserRole;
+    //   if (!(userRole === UserRole.ADMIN || userRole === UserRole.SUPER_ADMIN)) {
+    //     if (
+    //       userRole === UserRole.CONTENT_MGR &&
+    //       pathname.startsWith("/admin/content")
+    //     ) {
+    //       // Allow content managers to access content section
+    //     } else if (
+    //       userRole === UserRole.INVENTORY_MGR &&
+    //       pathname.startsWith("/admin/products")
+    //     ) {
+    //       // Allow inventory managers to access products section
+    //     } else {
+    //       console.log(
+    //         `Redirecting unauthorized admin access: userRole=${userRole}, path=${pathname}`
+    //       );
+    //       return NextResponse.redirect(new URL("/auth/login", request.url));
+    //     }
+    //   }
+    // }
   }
 
   // Protect Checkout Route
@@ -249,7 +262,7 @@ export async function middleware(request: NextRequest) {
       console.log(
         `Redirecting unauthenticated checkout access: path=${pathname}`
       );
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(new URL("/admin/adminAuth/adminLogin", request.url));
     }
   }
 

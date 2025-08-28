@@ -113,18 +113,18 @@ export default async function Homepage() {
               {/* Duplicate block for seamless loop */}
               <div className="flex items-center space-x-10 shrink-0">
                 <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
+                  <span>Home Installation Available</span>
                 </div>
                 <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
+                  <span>Home Installation Available</span>
                 </div>
               </div>
               <div className="flex items-center space-x-10 shrink-0">
                 <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
+                  <span>Home Installation Available</span>
                 </div>
                 <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
+                  <span>Home Installation Available</span>
                 </div>
               </div>
               <div className="flex items-center space-x-10 shrink-0">
