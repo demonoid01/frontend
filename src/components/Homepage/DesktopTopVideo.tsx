@@ -3,7 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Loader from "../MicroComponents/Loader";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ hroVideoDesktop }) => {
+    const videoWeb = hroVideoDesktop?.website[0].original;
+    console.log("this is the vidio for desktop====", videoWeb);
+
     const [isLoading, setIsLoading] = useState(true);
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -42,11 +45,11 @@ const VideoPlayer = () => {
 
     return (
         <>
-            {/* {isLoading && <Loader />} */}
+            {isLoading && <Loader />}
             <video
                 ref={videoRef}
-                // src="https://res.cloudinary.com/diyxdjcma/video/upload/v1747546463/WhatsApp_Video_2024-10-12_at_14.37.12_rfddtx.mp4"
-                src="/demonoid video.mp4"
+                src={videoWeb}
+                // src="https://demonoid.in:3542/uploads/hero/1756308325145-920995097.mp4"
                 autoPlay
                 muted
                 loop
@@ -59,7 +62,7 @@ const VideoPlayer = () => {
     );
 };
 
-const DesktopTopVideo = () => {
+const DesktopTopVideo = ({ heroVideoDesk }) => {
 
     // const handleScroll = () => {
     //   scrollTo.current?.scrollIntoView({ behavior: 'smooth' });
@@ -67,7 +70,7 @@ const DesktopTopVideo = () => {
 
     return (
         <div className="sm:block hidden sm:w-full sm:h-[80vh] bg-orange-200">
-            <VideoPlayer />
+            <VideoPlayer hroVideoDesktop={heroVideoDesk} />
         </div>
     );
 };

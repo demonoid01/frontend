@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 
 export function CategoryCarousel({ categories }) {
   const router = useRouter();
-  console.log(categories);
+  // console.log(categories);
   return (
     <Carousel
       opts={{

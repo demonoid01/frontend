@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { apiClient } from "@/utils/helper";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import { log } from "node:console";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";

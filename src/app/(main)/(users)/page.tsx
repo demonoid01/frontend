@@ -46,7 +46,7 @@ async function getCategories() {
   const categories = await apiClient<Category[]>('https://demonoid.in:3542/categories/');
   return { categories };
   // const categories = await apiClient<Category[]>('http://localhost:3542/categories', { method: 'POST', body: { id: 1 } });
-  // return { categories };
+  // return { categories }; 
 
 }
 async function getHeroVideo() {
@@ -66,7 +66,7 @@ export default async function Homepage() {
   }
 
   const { topVideo } = HeroVideo;
-  // console.log("HeroVideo====", topVideo);
+  console.log("HeroVideo====", topVideo.phone[0].original);
 
   if (!categoriesData?.categories) {
     notFound();
@@ -80,7 +80,9 @@ export default async function Homepage() {
     <div className="min-h-dvh w-full sm:w-full bg-[#111]">
 
       <TopVideo heroVideo={topVideo} />
-      <DesktopTopVideo />
+      {/* {console.log("what is this====")} */}
+
+      <DesktopTopVideo heroVideoDesk={topVideo} />
 
       <div className="mt-[100vh] sm:mt-0 pb-4 bg-[#111] w-full sm:w-full">
         <CategorySlider categories={categories} />

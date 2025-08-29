@@ -5,7 +5,8 @@ import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 
 const VideoPlayer = ({ heroVideo1 }) => {
   // const [{ original }] = heroVideo1;
-  // console.log("heroVideo1=====", original);
+  const videoPhon = heroVideo1.phone[0].original;
+  console.log("this is the vidio====", heroVideo1.phone[0].original);
 
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -48,7 +49,7 @@ const VideoPlayer = ({ heroVideo1 }) => {
       {isLoading && <Loader />}
       <video
         ref={videoRef}
-        src={heroVideo1?.original || "/CrPic1.png"}
+        src={videoPhon || "/CrPic1.png"}
         // src="/demonoid video.mp4"
         autoPlay
         muted
@@ -63,6 +64,7 @@ const VideoPlayer = ({ heroVideo1 }) => {
 };
 
 const TopVideo = ({ heroVideo }) => {
+  // console.log("heroVideo in top video====", heroVideo);
 
   // const handleScroll = () => {
   //   scrollTo.current?.scrollIntoView({ behavior: 'smooth' });
