@@ -43,14 +43,14 @@ type heroVideo = {
 };
 
 async function getCategories() {
-  const categories = await apiClient<Category[]>('http://localhost:3542/categories/');
+  const categories = await apiClient<Category[]>('https://147.93.107.197:3542/categories/');
   return { categories };
   // const categories = await apiClient<Category[]>('http://localhost:3542/categories', { method: 'POST', body: { id: 1 } });
   // return { categories };
 
 }
 async function getHeroVideo() {
-  const topVideo = await apiClient<heroVideo[]>('http://147.93.107.197:3542/hero');
+  const topVideo = await apiClient<heroVideo[]>('https://147.93.107.197:3542/hero');
   return { topVideo };
 
 }
