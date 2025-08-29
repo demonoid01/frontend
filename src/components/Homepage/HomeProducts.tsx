@@ -1,8 +1,10 @@
 import { homeProductsData } from "@/utils/homeProductsData";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const HomeProducts = () => {
+  const router = useRouter();
   return (
     <div className="sm:hidden space-y-8">
       <div>
@@ -12,7 +14,7 @@ const HomeProducts = () => {
             <span><p className="font-semibold text-xl pl-1">Stereo</p></span>
 
           </div>
-          <Button>View more</Button>
+          <Button onClick={() => router.push("/category")} >View more</Button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 gap-y-6 p-2">
           {homeProductsData.car_stereo.map((items) => {

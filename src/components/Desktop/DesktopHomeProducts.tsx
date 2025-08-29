@@ -1,7 +1,9 @@
 import { Button } from "../ui/button";
 import { homeProductsData } from "@/utils/homeProductsData";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 const DesktopHomeProduct = () => {
+    const router = useRouter();
     return (
         <div className="sm:block hidden my-20">
             <div>
@@ -11,7 +13,7 @@ const DesktopHomeProduct = () => {
                         <span><p className="font-semibold text-xl pl-1">Stereo</p></span>
 
                     </div>
-                    <Button>View more</Button>
+                    <Button onClick={() => router.push("/product")} >View more</Button>
                 </div>
 
                 <div className="grid sm:grid-cols-4 gap-5 gap-y-6 p-2">
