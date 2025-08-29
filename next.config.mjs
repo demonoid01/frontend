@@ -32,6 +32,11 @@ const nextConfig = {
         hostname: 'player.cloudinary.com',  // Include the correct hostname
         pathname: '/**',  // Match all paths
       },
+      {
+        protocol: 'https',  // Include the protocol
+        hostname: 'demonoid.in',  // Include the correct hostname
+        pathname: '/**',  // Match all paths
+      },
     ],
     unoptimized: true
   },
