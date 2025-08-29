@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Loader from "../MicroComponents/Loader";
-import { getOptimalVideoUrl, getCurrentQualityLevel, QualityLevel } from "@/utils/networkQuality";
-import QualitySelector from "./QualitySelector";
+import { autoSwitchVideoQuality, retryHigherVideoQuality, QualityLevel } from "@/utils/networkQuality";
 
 interface HeroVideoDesktop {
   website: Array<{
@@ -30,14 +29,27 @@ const VideoPlayer = ({ hroVideoDesktop }: VideoPlayerProps) => {
     useEffect(() => {
         if (!hroVideoDesktop?.website?.[0]?.qualities) return;
 
-        // Get optimal video quality based on network
-        const optimalUrl = getOptimalVideoUrl(hroVideoDesktop.website[0].qualities);
-        const quality = getCurrentQualityLevel();
-        
-        setVideoUrl(optimalUrl);
-        setCurrentQuality(quality);
-        
-        console.log(`Website Video - Quality: ${quality}, URL: ${optimalUrl}`);
+        // Start automatic quality switching
+        const initializeVideo = async () => {
+            try {
+                const url = await autoSwitchVideoQuality(
+                    hroVideoDesktop.website[0].qualities,
+                    (quality, url) => {
+                        setCurrentQuality(quality);
+                        setVideoUrl(url);
+                        console.log(`Auto-switched to ${quality}`);
+                    }
+                );
+                setVideoUrl(url);
+            } catch (error) {
+                console.error("Error in auto quality switching:", error);
+                // Fallback to 720p
+                setVideoUrl(hroVideoDesktop.website[0].qualities["720p"]);
+                setCurrentQuality("720p");
+            }
+        };
+
+        initializeVideo();
     }, [hroVideoDesktop]);
 
     useEffect(() => {
@@ -81,35 +93,31 @@ const VideoPlayer = ({ hroVideoDesktop }: VideoPlayerProps) => {
         };
     }, [videoUrl, currentQuality, hroVideoDesktop]);
 
-    const handleQualityChange = (quality: QualityLevel) => {
+    // Retry higher quality after some time
+    useEffect(() => {
         if (!hroVideoDesktop?.website?.[0]?.qualities) return;
-        
-        const newUrl = hroVideoDesktop.website[0].qualities[quality];
-        setVideoUrl(newUrl);
-        setCurrentQuality(quality);
-        setIsLoading(true);
-    };
 
-    if (!videoUrl) {
-        return (
-            <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-center">
-                    <p>Video not available</p>
-                </div>
-            </div>
-        );
-    }
+        const retryTimer = setTimeout(async () => {
+            try {
+                await retryHigherVideoQuality(
+                    hroVideoDesktop.website[0].qualities,
+                    (quality, url) => {
+                        setCurrentQuality(quality);
+                        setVideoUrl(url);
+                        console.log(`Retry upgraded to ${quality}`);
+                    }
+                );
+            } catch (error) {
+                console.error("Error in quality retry:", error);
+            }
+        }, 5000); // Wait 5 seconds before retrying
+
+        return () => clearTimeout(retryTimer);
+    }, [hroVideoDesktop]);
 
     return (
-        <>
-            {isLoading && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                    <Loader />
-                    <div className="ml-3 text-white text-sm">
-                        Loading {currentQuality} quality...
-                    </div>
-                </div>
-            )}
+        <div className="relative w-full h-[100vh] hidden sm:block">
+            {isLoading && <Loader />}
             <video
                 ref={videoRef}
                 src={videoUrl}
@@ -117,33 +125,19 @@ const VideoPlayer = ({ hroVideoDesktop }: VideoPlayerProps) => {
                 muted
                 loop
                 playsInline
-                preload="metadata"
-                className={`w-full h-full object-cover ${isLoading ? "opacity-50" : ""}`}
+                className={`w-full h-full object-cover ${isLoading ? "hidden" : ""}`}
             />
-            {/* Quality indicator */}
-            <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 rounded text-xs">
+            {/* Quality indicator (optional, for debugging) */}
+            <div className="absolute top-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
                 {currentQuality}
             </div>
-            
-            {/* Quality selector */}
-            <QualitySelector
-                currentQuality={currentQuality}
-                onQualityChange={handleQualityChange}
-            />
-        </>
-    );
-};
-
-interface DesktopTopVideoProps {
-    heroVideoDesk: HeroVideoDesktop;
-}
-
-const DesktopTopVideo = ({ heroVideoDesk }: DesktopTopVideoProps) => {
-    return (
-        <div className="sm:block hidden sm:w-full sm:h-[80vh] bg-orange-200">
-            <VideoPlayer hroVideoDesktop={heroVideoDesk} />
         </div>
     );
 };
 
+const DesktopTopVideo = ({ heroVideoDesk }: { heroVideoDesk: HeroVideoDesktop }) => {
+    return <VideoPlayer hroVideoDesktop={heroVideoDesk} />;
+};
+
 export default DesktopTopVideo;
+

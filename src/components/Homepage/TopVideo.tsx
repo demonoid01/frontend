@@ -1,9 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Loader from "../MicroComponents/Loader";
-import { MdOutlineArrowDropDownCircle } from "react-icons/md";
-import { getOptimalVideoUrl, getCurrentQualityLevel, QualityLevel } from "@/utils/networkQuality";
-import QualitySelector from "./QualitySelector";
+import { autoSwitchVideoQuality, retryHigherVideoQuality, QualityLevel } from "@/utils/networkQuality";
 
 interface HeroVideo {
   phone: Array<{
@@ -31,14 +29,27 @@ const VideoPlayer = ({ heroVideo1 }: VideoPlayerProps) => {
   useEffect(() => {
     if (!heroVideo1?.phone?.[0]?.qualities) return;
 
-    // Get optimal video quality based on network
-    const optimalUrl = getOptimalVideoUrl(heroVideo1.phone[0].qualities);
-    const quality = getCurrentQualityLevel();
-    
-    setVideoUrl(optimalUrl);
-    setCurrentQuality(quality);
-    
-    console.log(`Phone Video - Quality: ${quality}, URL: ${optimalUrl}`);
+    // Start automatic quality switching
+    const initializeVideo = async () => {
+      try {
+        const url = await autoSwitchVideoQuality(
+          heroVideo1.phone[0].qualities,
+          (quality, url) => {
+            setCurrentQuality(quality);
+            setVideoUrl(url);
+            console.log(`Auto-switched to ${quality}`);
+          }
+        );
+        setVideoUrl(url);
+      } catch (error) {
+        console.error("Error in auto quality switching:", error);
+        // Fallback to 720p
+        setVideoUrl(heroVideo1.phone[0].qualities["720p"]);
+        setCurrentQuality("720p");
+      }
+    };
+
+    initializeVideo();
   }, [heroVideo1]);
 
   useEffect(() => {
@@ -82,35 +93,31 @@ const VideoPlayer = ({ heroVideo1 }: VideoPlayerProps) => {
     };
   }, [videoUrl, currentQuality, heroVideo1]);
 
-  const handleQualityChange = (quality: QualityLevel) => {
+  // Retry higher quality after some time
+  useEffect(() => {
     if (!heroVideo1?.phone?.[0]?.qualities) return;
-    
-    const newUrl = heroVideo1.phone[0].qualities[quality];
-    setVideoUrl(newUrl);
-    setCurrentQuality(quality);
-    setIsLoading(true);
-  };
 
-  if (!videoUrl) {
-    return (
-      <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-center">
-          <p>Video not available</p>
-        </div>
-      </div>
-    );
-  }
+    const retryTimer = setTimeout(async () => {
+      try {
+        await retryHigherVideoQuality(
+          heroVideo1.phone[0].qualities,
+          (quality, url) => {
+            setCurrentQuality(quality);
+            setVideoUrl(url);
+            console.log(`Retry upgraded to ${quality}`);
+          }
+        );
+      } catch (error) {
+        console.error("Error in quality retry:", error);
+      }
+    }, 5000); // Wait 5 seconds before retrying
+
+    return () => clearTimeout(retryTimer);
+  }, [heroVideo1]);
 
   return (
-    <>
-      {isLoading && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-          <Loader />
-          <div className="ml-3 text-white text-sm">
-            Loading {currentQuality} quality...
-          </div>
-        </div>
-      )}
+    <div className="relative w-full h-[100vh] sm:hidden">
+      {isLoading && <Loader />}
       <video
         ref={videoRef}
         src={videoUrl}
@@ -118,40 +125,19 @@ const VideoPlayer = ({ heroVideo1 }: VideoPlayerProps) => {
         muted
         loop
         playsInline
-        preload="metadata"
-        className={`w-full h-full object-cover ${isLoading ? "opacity-50" : ""}`}
+        className={`w-full h-full object-cover ${isLoading ? "hidden" : ""}`}
       />
-      {/* Quality indicator */}
-      <div className="absolute top-4 left-4 bg-black/70 text-white px-2 py-1 rounded text-xs">
+      {/* Quality indicator (optional, for debugging) */}
+      <div className="absolute top-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
         {currentQuality}
       </div>
-      
-      {/* Quality selector */}
-      <QualitySelector
-        currentQuality={currentQuality}
-        onQualityChange={handleQualityChange}
-      />
-    </>
-  );
-};
-
-interface TopVideoProps {
-  heroVideo: HeroVideo;
-}
-
-const TopVideo = ({ heroVideo }: TopVideoProps) => {
-  return (
-    <div className="sm:hidden bg-red-500 h-dvh overflow-hidden w-svw md:w-[700px] md:left-1/2 md:translate-x-[-50%] fixed top-10 -z-20">
-      <div className="fixed bottom-1/4 right-1/4 z-50 p-4">
-        <button className="flex flex-col items-center px-4 py-2 text-white">
-          <MdOutlineArrowDropDownCircle size={50} />
-          <span className="uppercase text-2xl">Shop Now</span>
-        </button>
-      </div>
-
-      <VideoPlayer heroVideo1={heroVideo} />
     </div>
   );
 };
 
+const TopVideo = ({ heroVideo }: { heroVideo: HeroVideo }) => {
+  return <VideoPlayer heroVideo1={heroVideo} />;
+};
+
 export default TopVideo;
+

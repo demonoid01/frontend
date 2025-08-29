@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Loader from "../MicroComponents/Loader";
-import { MdOutlineArrowDropDownCircle } from "react-icons/md";
-import Image from "next/image";
 
 const VideoPlayer2 = () => {
     const [isLoading, setIsLoading] = useState(true);
