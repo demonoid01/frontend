@@ -31,7 +31,7 @@ type Category = {
 };
 
 async function getCategories() {
-  const categories = await apiClient<Category[]>('http://localhost:3542/categories/');
+  const categories = await apiClient<Category[]>('https://demonoid.in:3542/categories/');
   // console.log("categories==", categories);
   return { categories };
 }

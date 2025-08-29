@@ -45,9 +45,9 @@ const AdminLoginPage = () => {
             // const response = await api.post("/auth/login", formData); // Interceptor adds CSRF header
 
             // const response = await api.post("http://localhost:3000/auth/login", formData); // Interceptor adds CSRF header
-            const response = await apiClient<Admin[]>('https://147.93.107.197:3542/admin/login', { method: 'POST', body: { ...formData } });
+            const response = await apiClient<Admin[]>('https://demonoid.in:3542/admin/login', { method: 'POST', body: { ...formData } });
 
-            console.log("Login Response: ", response);
+            // console.log("Login Response: ", response);
 
             if (response.message === "Login successful") {
                 await new Promise((resolve) => setTimeout(resolve, 500));

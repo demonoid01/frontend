@@ -49,7 +49,7 @@ type OneCategory = {
 
 async function getProduct(id: number) {
 
-    const res = await apiClient<OneCategory[]>(`https://147.93.107.197:3542/products/category/${id}`);
+    const res = await apiClient<OneCategory[]>(`https://demonoid.in:3542/products/category/${id}`);
     // console.log('Category data:', res[0].status);
 
     if (res[0].status !== 1) {

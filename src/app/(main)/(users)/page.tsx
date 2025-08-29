@@ -43,25 +43,28 @@ type heroVideo = {
 };
 
 async function getCategories() {
-  const categories = await apiClient<Category[]>('https://147.93.107.197:3542/categories/');
+  const categories = await apiClient<Category[]>('https://demonoid.in:3542/categories/');
   return { categories };
   // const categories = await apiClient<Category[]>('http://localhost:3542/categories', { method: 'POST', body: { id: 1 } });
   // return { categories };
 
 }
 async function getHeroVideo() {
-  const topVideo = await apiClient<heroVideo[]>('https://147.93.107.197:3542/hero');
+  const topVideo = await apiClient<heroVideo[]>('https://demonoid.in:3542/hero');
   return { topVideo };
 
 }
 
 
 export default async function Homepage() {
+
   const categoriesData = await getCategories();
+
   const HeroVideo = await getHeroVideo();
   if (!HeroVideo?.topVideo) {
     notFound();
   }
+
   const { topVideo } = HeroVideo;
   // console.log("HeroVideo====", topVideo);
 
@@ -69,6 +72,9 @@ export default async function Homepage() {
     notFound();
   }
   const { categories } = categoriesData;
+
+  // console.log("categories====", categories);
+
 
   return (
     <div className="min-h-dvh w-full sm:w-full bg-[#111]">

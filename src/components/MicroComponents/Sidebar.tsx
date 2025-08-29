@@ -9,7 +9,9 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import api from "@/lib/api";
+import { apiClient } from "@/utils/helper";
+// import { log } from "console";
+// import api from "@/lib/api";
 
 interface Props {
   isSidebarOpen: boolean;
@@ -18,6 +20,16 @@ interface Props {
   loading: boolean;
   logout: () => Promise<void>;
 }
+type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  status: number;
+  createdAt: string;
+  updatedAt: string;
+  image: string;
+};
 
 const Sidebar = ({
   isSidebarOpen,
@@ -44,8 +56,11 @@ const Sidebar = ({
 
   async function getCategories() {
     try {
-      const res = await api.get("/categories");
-      setCategories(res.data?.categories);
+      const res = await apiClient<Category[]>('https://demonoid.in:3542/categories/');
+      // log("categories==", res);
+      // console.log("categories==", res);
+
+      setCategories(res);
     } catch (error) {
       console.log("Error in getting categories");
     }

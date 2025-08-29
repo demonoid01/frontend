@@ -60,7 +60,7 @@ const UserRegisterPage = () => {
       // });
       console.log("formData===", formData);
 
-      const response = await apiClient<User[]>('http://147.93.107.197:3542/auth/register', { method: 'POST', body: { ...formData } });
+      const response = await apiClient<User[]>('https://demonoid.in:3542/auth/register', { method: 'POST', body: { ...formData } });
 
       console.log("Registration successful:", response);
       if (response.message === "User registered successfully") {

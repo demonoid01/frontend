@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "../ui/button";
 import { homeProductsData } from "@/utils/homeProductsData";
 import Image from "next/image";

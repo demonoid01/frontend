@@ -976,7 +976,7 @@ export default function CreateProductPage() {
       //   ...values,
       // });
       // const response = await apiClient<CategoryUplord[]>('http://147.93.107.197:3542/categories', { method: 'POST', body: formData, });
-      const response = await apiClient('http://147.93.107.197:3542/products', { method: 'POST', body: formData, });
+      const response = await apiClient('https://demonoid.in:3542/products', { method: 'POST', body: formData, });
       console.log("response=====", response);
 
 

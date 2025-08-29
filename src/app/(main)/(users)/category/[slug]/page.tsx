@@ -51,7 +51,7 @@ async function getCategory(id: number) {
   // const res = await fetch(`https://nomadautomobile.store/api/categories/${slug}`, {
   //   cache: "no-store",
   // });
-  const res = await apiClient<OneCategory[]>(`http://147.93.107.197:3542/products/category/${id}`);
+  const res = await apiClient<OneCategory[]>(`https://demonoid.in:3542/products/category/${id}`);
   // console.log('Category data:', res[0].status);
 
   if (res[0].status !== 1) {

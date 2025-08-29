@@ -63,7 +63,7 @@ export default function CategoryListPage() {
     const fetchCategories = async () => {
       try {
         // const response = await fetch("/api/categories");
-        const response = await apiClient<Category[]>('http://147.93.107.197:3542/categories');
+        const response = await apiClient<Category[]>('https://demonoid.in:3542/categories');
 
         console.log("response", response);
         // const data = await response.json();
@@ -88,7 +88,7 @@ export default function CategoryListPage() {
       //   },
       //   body: JSON.stringify({ id }),
       // });
-      const response = await apiClient<Category[]>(`https://147.93.107.197:3542/categories/${id}`, { method: 'DELETE' });
+      const response = await apiClient<Category[]>(`https://demonoid.in:3542/categories/${id}`, { method: 'DELETE' });
       console.log("response", response);
 
 

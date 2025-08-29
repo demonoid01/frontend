@@ -38,7 +38,7 @@ export default function CreateCategoryPage() {
 
         try {
 
-            const response = await apiClient('https://147.93.107.197:3542/hero/upload', { method: 'POST', body: formData, });
+            const response = await apiClient('https://demonoid.in:3542/hero/upload', { method: 'POST', body: formData, });
             console.log("response=====", response);
 
 
