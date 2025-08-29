@@ -9,14 +9,13 @@ import HomeFaq from "@/components/HomeFaq";
 import TopVideo2 from "@/components/Homepage/TopVideo2";
 import CarouselSeamless from "@/components/Homepage/CarouselSeamless";
 import { ImageCarousel } from "@/components/Homepage/ImageCarousel";
-import { apiClient } from "@/utils/helper";
+import { apiClient, apiGet } from "@/utils/helper";
+import { apiConfig } from "@/utils/config";
 import DesktopTopVideo from "@/components/Homepage/DesktopTopVideo";
 import DesktopBestSellers from "@/components/Desktop/DesktopBestSellers";
 import DesktopHomeProduct from "@/components/Desktop/DesktopHomeProducts";
 import { DesktopImageCarousel } from "@/components/Desktop/DesktopImageCarousel";
 import DesktopTopVideo2 from "@/components/Desktop/DesktopTopVideo2";
-
-
 
 export const dynamic = 'force-dynamic';
 
@@ -30,31 +29,49 @@ type Category = {
   updatedAt: string;
   image: string;
 };
+
 type heroVideo = {
-  id: number;
-  created_at: string;
-  original: string;
-  qualities: {
-    "120p": string;
-    "1080p": string;
-    "2k": string;
-    "4k": string;
-  };
+  phone: Array<{
+    id: number;
+    platform: string;
+    original: string;
+    qualities: {
+      "480p": string;
+      "720p": string;
+      "1080p": string;
+    };
+  }>;
+  website: Array<{
+    id: number;
+    platform: string;
+    original: string;
+    qualities: {
+      "480p": string;
+      "720p": string;
+      "1080p": string;
+    };
+  }>;
 };
 
 async function getCategories() {
-  const categories = await apiClient<Category[]>('https://demonoid.in:3542/categories/');
-  return { categories };
-  // const categories = await apiClient<Category[]>('http://localhost:3542/categories', { method: 'POST', body: { id: 1 } });
-  // return { categories }; 
-
+  try {
+    const categories = await apiGet<Category[]>(apiConfig.endpoints.categories);
+    return { categories };
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    return { categories: null };
+  }
 }
+
 async function getHeroVideo() {
-  const topVideo = await apiClient<heroVideo[]>('https://demonoid.in:3542/hero');
-  return { topVideo };
-
+  try {
+    const topVideo = await apiGet<heroVideo>(apiConfig.endpoints.hero);
+    return { topVideo };
+  } catch (error) {
+    console.error('Error fetching hero video:', error);
+    return { topVideo: null };
+  }
 }
-
 
 export default async function Homepage() {
 
@@ -66,22 +83,20 @@ export default async function Homepage() {
   }
 
   const { topVideo } = HeroVideo;
-  console.log("HeroVideo====", topVideo.phone[0].original);
+  console.log("HeroVideo====", topVideo);
 
   if (!categoriesData?.categories) {
     notFound();
   }
   const { categories } = categoriesData;
 
-  // console.log("categories====", categories);
-
-
   return (
     <div className="min-h-dvh w-full sm:w-full bg-[#111]">
 
+      {/* Mobile Hero Video */}
       <TopVideo heroVideo={topVideo} />
-      {/* {console.log("what is this====")} */}
-
+      
+      {/* Desktop Hero Video */}
       <DesktopTopVideo heroVideoDesk={topVideo} />
 
       <div className="mt-[100vh] sm:mt-0 pb-4 bg-[#111] w-full sm:w-full">
@@ -100,7 +115,6 @@ export default async function Homepage() {
             src="/banner.png"
             fill
             alt="banner"
-          // className="object-cover"
           />
         </div>
         <HomeProducts />
@@ -127,28 +141,9 @@ export default async function Homepage() {
                   <span>Home Installation Available</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-10 shrink-0">
-                <div className="flex items-center gap-2 text-black/75">
-                  <span>Home Installation Available</span>
-                </div>
-                <div className="flex items-center gap-2 text-black/75">
-                  <span>Home Installation Available</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-10 shrink-0">
-                <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
-                </div>
-                <div className="flex items-center gap-2 text-black/75">
-                  <span>FREE Home Installation</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
-        <ImageCarousel />
-        <DesktopImageCarousel />
-
         <HomeFaq />
       </div>
     </div>
